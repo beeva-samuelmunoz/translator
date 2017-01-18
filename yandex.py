@@ -111,7 +111,11 @@ class Yandex(object):
                 "callback": callback
             }
         )
-        return response.json()['text']
+        if response.status_code==200:
+            return response.json()['text']
+        else:  # If fails, see: https://yandex.com/support/webmaster/indexing/http-codes.xml
+            print "{} {}".format(response.status_code, response.reason)
+            return [[]]*len(text_list)
 
 
     def detect_language(self, text, hint='', callback=''):
